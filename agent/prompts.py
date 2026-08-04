@@ -20,13 +20,13 @@ above step-by-step process.
 
 The final summary should be in the format below:
 
-===
+>>>
   {Price of commodity}
   - Summary point 1
   - Summary point 2
   - Summary point 3
   - Summary point n
-===
+<<<
 """
 
 user_message = """
