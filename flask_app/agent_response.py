@@ -7,5 +7,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 bp = Blueprint(
-  "agent_response", __name__, url_prefix="/"
+  "agent_response", __name__
 )
+
+@bp.route("/")
+def homepage():
+  return render_template("index.html")
