@@ -1,6 +1,7 @@
-gold-price-tracker/
+.venv/
 config/
 .vscode/
+.DS_Store
 
 *.pyc
 __pycache__/
