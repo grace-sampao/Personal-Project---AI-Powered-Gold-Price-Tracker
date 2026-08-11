@@ -28,8 +28,7 @@ def create_app(test_config=None):
     app.instance_path, exist_ok=True
   )
 
-  @app.route("/")
-  def hello():
-    return "<p>Hello, World!</p>"
+  from . import agent_response
+  app.register_blueprint(agent_response.bp)
 
   return app
