@@ -11,7 +11,7 @@ def create_app(test_config=None):
   app.config.from_mapping(
     SECRET_KEY="dev",
     DATABASE=os.path.join(
-      app.instance_path, "flaskr.sqlite"
+      app.instance_path, "flask_app.sqlite"
     )
   )
 
@@ -27,5 +27,9 @@ def create_app(test_config=None):
   os.makedirs(
     app.instance_path, exist_ok=True
   )
+
+  @app.route("/")
+  def hello():
+    return "<p>Hello, World!</p>"
 
   return app
