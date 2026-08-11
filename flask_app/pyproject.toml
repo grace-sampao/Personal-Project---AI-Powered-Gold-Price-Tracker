@@ -7,7 +7,7 @@ authors = [
     email="sampaograce@gmail.com"
   }
 ]
-description = "Agentic-powered gold price tracker single page web application."
+description = "Agentic-powered gold price tracker web application."
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
@@ -16,13 +16,11 @@ dependencies = [
   "flask",
 ]
 
-
 [project.urls]
 GitHub Repository = "https://github.com/grace-sampao/Personal-Project---AI-Powered-Gold-Price-Tracker"
 Blog = "https://grace-sampao.github.io"
 LinkedIn = "https://www.linkedin.com/in/grace-sampao"
 X = "https://x.com/grace_sampao"
-
 
 [build-system]
 requires = ["flit_core >= 3.12.0, <5"]
