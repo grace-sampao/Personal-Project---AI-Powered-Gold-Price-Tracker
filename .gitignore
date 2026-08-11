@@ -1,3 +1,5 @@
 gold-price-tracker/
-
 config/
+.vscode/
+agent/__pycache__/
+tools/__pycache__/
