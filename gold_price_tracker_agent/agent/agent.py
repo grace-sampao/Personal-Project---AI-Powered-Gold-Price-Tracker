@@ -5,9 +5,9 @@ import importlib
 root_dir = Path(__file__).resolve().parent.parent
 sys.path.append(str(root_dir))
 
-from tools import search_tool
-from config import environment
-import prompts
+from gold_price_tracker_agent.tools import search_tool
+from gold_price_tracker_agent.config import environment
+import gold_price_tracker_agent.agent.prompts as prompts
 
 importlib.reload(environment)
 

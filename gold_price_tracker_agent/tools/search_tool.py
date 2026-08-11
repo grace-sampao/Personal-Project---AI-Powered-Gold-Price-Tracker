@@ -5,7 +5,7 @@ import importlib
 root_dir = Path(__file__).resolve().parent.parent
 sys.path.append(str(root_dir))
 
-from config import environment
+from gold_price_tracker_agent.config import environment
 importlib.reload(environment)
 
 from langchain_tavily import TavilySearch
