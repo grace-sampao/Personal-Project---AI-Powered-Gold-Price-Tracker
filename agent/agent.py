@@ -1,16 +1,16 @@
-# import sys
-# from pathlib import Path
-import importlib
+import sys
+from pathlib import Path
+# import importlib
 
-# root_dir = Path(__file__).resolve().parent.parent
-# sys.path.append(
-#   str(root_dir)
-# )
+root_dir = Path(__file__).resolve().parent.parent
+sys.path.append(
+  str(root_dir)
+)
 
-from config import config
-import prompts
+from agent.config import config
+import agent.prompts.prompts as prompts
 
-importlib.reload(config)
+# importlib.reload(config)
 
 from langchain.agents import create_agent
 from langchain_deepseek import ChatDeepSeek
@@ -48,6 +48,4 @@ def invoke_agent():
 
   response = response["messages"][-1].content_blocks[-1]["text"]
 
-  print(response)
-
-invoke_agent()
+  return response
