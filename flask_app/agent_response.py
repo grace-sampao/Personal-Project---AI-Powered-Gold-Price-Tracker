@@ -1,15 +1,24 @@
-import functools
+import sys
+from pathlib import Path
+# import importlib
 
-from flask import (
-  Blueprint, flash, g, redirect, render_template, request, session, url_for
+root_dir = Path(__file__).resolve().parent.parent
+sys.path.append(
+  str(root_dir)
 )
-from werkzeug.security import check_password_hash, generate_password_hash
+
+from flask import Blueprint, render_template
+from agent.agent import invoke_agent
 
 
 bp = Blueprint(
   "agent_response", __name__
 )
 
-@bp.route("/")
+@bp.route("/", methods=["GET"])
 def homepage():
-  return render_template("index.html")
+  response = invoke_agent()
+
+  return render_template(
+    "index.html", gold_price_summary=response
+  )
