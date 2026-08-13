@@ -13,7 +13,7 @@ importlib.reload(config)
 from langchain_tavily import TavilySearch
 
 
-search_tool = TavilySearch(
+tavily_search = TavilySearch(
   max_results=5,
   tavily_api_key=config.TAVILY_API_KEY,
   topic="finance",
