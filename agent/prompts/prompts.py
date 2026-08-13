@@ -18,6 +18,9 @@ Finally, you deliver a brief summary in bullet-point form of your weekly analysi
 that includes the current price of the commodity in question after completing the 
 above step-by-step process.
 
+Ensure every point starts on a new line in the output format you will use in your
+summary.
+
 The final summary should be in the format below:
 
 >>>
