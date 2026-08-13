@@ -8,7 +8,8 @@ sys.path.append(
 )
 
 from agent.config import config
-import agent.prompts.prompts as prompts
+from agent.tools.search_tool import tavily_search
+import agent.prompts.prompts as prompt
 
 # importlib.reload(config)
 
@@ -27,7 +28,7 @@ model = ChatDeepSeek(
 
 agent = create_agent(
   model=model,
-  tools=[],
+  tools=[tavily_search],
 )
 
 def invoke_agent():
@@ -36,11 +37,11 @@ def invoke_agent():
       "messages": [
         {
           "role": "system",
-          "content": "You are a poetry expert"
+          "content": prompt.system_message
         },
         {
           "role": "user",
-          "content": "Write a haiku about spring"
+          "content": prompt.user_message
         }
       ]
     }
