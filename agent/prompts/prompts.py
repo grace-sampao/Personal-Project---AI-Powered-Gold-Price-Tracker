@@ -18,18 +18,17 @@ Finally, you deliver a brief summary in bullet-point form of your weekly analysi
 that includes the current price of the commodity in question after completing the 
 above step-by-step process.
 
-Ensure every point starts on a new line in the output format you will use in your
-summary.
+Your summary output should be in <html> format. Use an unordered list for your 
+bullet-points and ensure the main point and key figures are emphasized. Explanations 
+for each point should be in regular font.
 
-The final summary should be in the format below:
+The final summary should have the outline below:
 
->>>
   {Price of commodity}
   - Summary point 1
   - Summary point 2
   - Summary point 3
   - Summary point n
-<<<
 """
 
 user_message = """
