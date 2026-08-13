@@ -1,13 +1,12 @@
-import sys
-from pathlib import Path
+# import sys
+# from pathlib import Path
 import importlib
 
-root_dir = Path(__file__).resolve().parent.parent
-sys.path.append(
-  str(root_dir)
-)
+# root_dir = Path(__file__).resolve().parent.parent
+# sys.path.append(
+#   str(root_dir)
+# )
 
-from tools import search_tool
 from config import config
 import prompts
 
@@ -47,4 +46,8 @@ def invoke_agent():
     }
   )
 
-  return response["messages"][-1].content_blocks[-1]["text"]
+  response = response["messages"][-1].content_blocks[-1]["text"]
+
+  print(response)
+
+invoke_agent()
