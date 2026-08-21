@@ -15,6 +15,7 @@ import agent.prompts.prompts as prompt
 
 from langchain.agents import create_agent
 from langchain_deepseek import ChatDeepSeek
+from langgraph.checkpoint.memory import InMemorySaver
 
 
 model = ChatDeepSeek(
@@ -29,7 +30,12 @@ model = ChatDeepSeek(
 agent = create_agent(
   model=model,
   tools=[tavily_search],
+  checkpointer=InMemorySaver(),
 )
+
+thread_config = {
+  "configurable": {"thread_id": "1"}
+}
 
 def invoke_agent():
   response = agent.invoke(
@@ -44,9 +50,10 @@ def invoke_agent():
           "content": prompt.user_message
         }
       ]
-    }
+    },
+    thread_config
   )
 
-  response = response["messages"][-1].content_blocks[-1]["text"]
+  response = response["messages"][-1].content
 
   return response
