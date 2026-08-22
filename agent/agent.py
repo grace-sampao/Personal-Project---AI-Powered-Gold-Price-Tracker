@@ -17,6 +17,8 @@ from langchain.agents import create_agent
 from langchain_deepseek import ChatDeepSeek
 from langgraph.checkpoint.memory import InMemorySaver
 
+import datetime as dt
+
 
 model = ChatDeepSeek(
   model="deepseek-v4-flash",
@@ -38,6 +40,10 @@ thread_config = {
 }
 
 def invoke_agent():
+  start_date = dt.date(2026, 8, 15)
+  current_date = dt.date.today()
+  period_elapsed = dt.timedelta(days=7)
+
   response = agent.invoke(
     {
       "messages": [
