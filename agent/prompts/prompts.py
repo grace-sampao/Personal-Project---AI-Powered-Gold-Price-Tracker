@@ -18,9 +18,9 @@ Finally, you deliver a brief summary in bullet-point form of your weekly analysi
 that includes the current price of the commodity in question after completing the 
 above step-by-step process.
 
-Your summary output should be in <html> format. Use an unordered list for your 
-bullet-points and ensure the main point and key figures are emphasized. Explanations 
-for each point should be in regular font.
+Your summary output should be in <html> format for output into a <section> element. 
+Use an unordered list for your bullet-points and ensure the main point and key figures 
+are emphasized. Explanations for each point should be in regular font.
 
 The final summary should have the outline below:
 
@@ -36,7 +36,7 @@ I would like to invest in gold by buying units of the ABSA Gold ETF listed on
 the Nairobi Securities Exchange as a way of raising capital for various uses.
 
 Generate a brief summary in bullet point form that includes the current price of 
-gold in the past week and how the performance of particular global finance markets 
-and current and/or prevailing geopolitical events have influenced the price of 
-gold.
+gold in the past week and how the performance of relevant global finance markets 
+and current and/or relevant prevailing geopolitical events have influenced the price 
+of gold.
 """
