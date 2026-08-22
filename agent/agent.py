@@ -42,24 +42,25 @@ thread_config = {
 def invoke_agent():
   start_date = dt.date(2026, 8, 15)
   current_date = dt.date.today()
-  period_elapsed = dt.timedelta(days=7)
+  period_elapsed = current_date - start_date
 
-  response = agent.invoke(
-    {
-      "messages": [
-        {
-          "role": "system",
-          "content": prompt.system_message
-        },
-        {
-          "role": "user",
-          "content": prompt.user_message
-        }
-      ]
-    },
-    thread_config
-  )
+  if period_elapsed.days % 7 == 0:
+    response = agent.invoke(
+      {
+        "messages": [
+          {
+            "role": "system",
+            "content": prompt.system_message
+          },
+          {
+            "role": "user",
+            "content": prompt.user_message
+          }
+        ]
+      },
+      thread_config
+    )
 
-  response = response["messages"][-1].content
+    response = response["messages"][-1].content
 
-  return response
+    return response
