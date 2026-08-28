@@ -9,13 +9,15 @@ sys.path.append(
 
 from agent.config import config
 from agent.tools.search_tool import tavily_search
+from agent.tools.save_response import save_response
+from agent.tools.get_response import get_response
 import agent.prompts.prompts as prompt
 
 # importlib.reload(config)
 
 from langchain.agents import create_agent
 from langchain_deepseek import ChatDeepSeek
-from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.store.memory import InMemoryStore
 
 import datetime as dt
 
@@ -29,15 +31,13 @@ model = ChatDeepSeek(
   max_retries=2,
 )
 
+store = InMemoryStore()
+
 agent = create_agent(
   model=model,
-  tools=[tavily_search],
-  checkpointer=InMemorySaver(),
+  tools=[tavily_search, save_response, get_response],
+  store=store,
 )
-
-thread_config = {
-  "configurable": {"thread_id": "1"}
-}
 
 def invoke_agent():
   start_date = dt.date(2026, 8, 15)
@@ -57,8 +57,22 @@ def invoke_agent():
             "content": prompt.user_message
           }
         ]
-      },
-      thread_config
+      }
+    )
+
+    response = response["messages"][-1].content
+
+    return response
+  else:
+    response = agent.invoke(
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Output only the contents of the latest brief summary you have saved."
+          }
+        ]
+      }
     )
 
     response = response["messages"][-1].content
