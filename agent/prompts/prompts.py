@@ -30,6 +30,8 @@ The final summary should have the outline below:
   - Summary point 2
   - Summary point 3
   - Summary point n
+
+Save your final summary to the persistent store implementation provided.
 """
 
 user_message = """
