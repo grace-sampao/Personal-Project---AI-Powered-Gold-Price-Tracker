@@ -44,7 +44,7 @@ def invoke_agent():
   current_date = dt.date.today()
   period_elapsed = current_date - start_date
 
-  if period_elapsed.days % 7 == 0:
+  if period_elapsed.days % 7 != 0:
     response = agent.invoke(
       {
         "messages": [
@@ -69,7 +69,7 @@ def invoke_agent():
         "messages": [
           {
             "role": "user",
-            "content": "Output only the contents of the latest brief summary you have saved."
+            "content": "Retrieve and output the contents of the latest summary you saved in the persistent store implementation provided."
           }
         ]
       }
