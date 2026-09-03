@@ -1,12 +1,19 @@
 from langchain.tools import tool, ToolRuntime
+from langchain.messages import AIMessage
 
 
 @tool
-def get_response(date: str, runtime: ToolRuntime) -> str:
+def get_response(runtime: ToolRuntime) -> str:
   """
-  Retrieve the latest agent response from the memory.
+  Get the most recent message from the AI agent.
   """
-  store = runtime.store
-  response = store.get(("responses",), date)
+  responses = runtime.state["messages"]
 
-  return str(response.value)
+  # Find the last AI message
+  for response in reversed(responses):
+    if isinstance(response, AIMessage):
+      response = response.content
+
+      return response
+
+  return "No AI messages found"
