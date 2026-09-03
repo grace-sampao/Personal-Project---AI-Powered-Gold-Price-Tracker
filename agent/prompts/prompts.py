@@ -39,6 +39,4 @@ Generate a brief summary in bullet point form that includes the current price of
 gold in the past week and how the performance of relevant global finance markets 
 and current and/or relevant prevailing geopolitical events have influenced the price 
 of gold.
-
-Last but not least, save the brief summary you have generated.
 """
