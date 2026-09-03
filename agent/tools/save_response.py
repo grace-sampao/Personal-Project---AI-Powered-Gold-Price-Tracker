@@ -1,15 +1,27 @@
 from langchain.tools import tool, ToolRuntime
+from langchain.agents import AgentState
+from langchain.messages import ToolMessage
+from langgraph.types import Command
 
+
+class CustomState(AgentState):
+  ai_message: str
 
 @tool
 def save_response(
-  date: str,
-  summary: dict[str, str],
-  runtime: ToolRuntime) -> str:
+  response: str, runtime: ToolRuntime[None, CustomState]
+) -> Command:
   """
-  Save the agent response into the memory.
+  Set the agent's response in the conversation state.
   """
-  store = runtime.store
-  store.put(("responses",), date, summary)
-
-  return "Sucessfully saved agent response."
+  return Command(
+    update={
+      "ai_message": response,
+      "messages": [
+        ToolMessage(
+          content=f"{response}",
+          tool_call_id=runtime.tool_call_id
+        )
+      ]
+    }
+  )
