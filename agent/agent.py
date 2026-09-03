@@ -64,6 +64,9 @@ def invoke_agent():
 
     return response
   else:
+    # This part should access the memory & retrieve the response generated when the condition is met.
+    # I doubt invoking the agent again here achieves this. We'll see.
+
     response = agent.invoke(
       {
         "messages": [
