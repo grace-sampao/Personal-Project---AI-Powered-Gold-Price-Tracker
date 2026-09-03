@@ -9,7 +9,6 @@ sys.path.append(
 
 from flask import Blueprint, render_template
 from agent.agent import invoke_agent
-import markdown
 
 
 bp = Blueprint(
@@ -18,10 +17,8 @@ bp = Blueprint(
 
 @bp.route("/", methods=["GET"])
 def homepage():
-  markdown_response = invoke_agent()
-  response = markdown.markdown(
-    markdown_response, extensions=["extra", "codehilite"]
-  )
+  response = invoke_agent()
+  response = response["messages"][-1].content
 
   return render_template(
     "index.html", gold_price_summary=response
