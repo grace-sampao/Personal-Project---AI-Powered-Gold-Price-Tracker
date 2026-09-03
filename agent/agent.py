@@ -40,7 +40,7 @@ agent = create_agent(
 )
 
 def invoke_agent():
-  start_date = dt.date(2026, 8, 15)
+  start_date = dt.date(2026, 8, 30)
   current_date = dt.date.today()
   period_elapsed = current_date - start_date
 
@@ -60,11 +60,9 @@ def invoke_agent():
       }
     )
 
-    response = response["messages"][-1].content
-
     return response
   else:
-    # This part should access the memory & retrieve the response generated when the condition is met.
+    # This part should access the memory & retrieve the response generated when the condition is not met.
     # I doubt invoking the agent again here achieves this. We'll see.
 
     response = agent.invoke(
@@ -72,12 +70,12 @@ def invoke_agent():
         "messages": [
           {
             "role": "user",
-            "content": "Retrieve and output the contents of the latest summary you saved in the persistent store implementation provided."
+            "content": "Access your AgentState and use the get_response tool provided to output the last AI message."
           }
         ]
       }
     )
 
-    response = response["messages"][-1].content
+    # response = response["messages"][-1].content
 
     return response
