@@ -31,6 +31,7 @@ langgraph-checkpoint==4.2.0
 langgraph-prebuilt==1.1.0
 langgraph-sdk==0.4.2
 langsmith==0.10.17
+Markdown==3.10.3
 MarkupSafe==3.0.3
 multidict==6.7.1
 openai==2.53.0
@@ -40,6 +41,7 @@ packaging==26.3
 propcache==0.5.2
 pydantic==2.13.4
 pydantic_core==2.46.4
+python-dotenv==1.2.3
 PyYAML==6.0.3
 regex==2026.7.19
 requests==2.34.2
