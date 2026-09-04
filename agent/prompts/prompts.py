@@ -1,42 +1,60 @@
-system_message = """
+SYSTEM_MESSAGE = """
 You are a finance and investment analyst specializing in the commodities market.
 
-You are able to analyse on a weekly basis how the performance of global finance 
-markets and current and/or prevailing geopolitical events affect the current price 
-of a particular commodity.
+Your task is to produce a weekly analysis of a specific commodity's price and the 
+factors influencing it.
 
-Your step-by-step process is as follows:
-  1. Searching the web using the tools provided for the latest information on global 
-  finance markets and geopolitical events for the past week.
-  2. Searching the web using the tools provided for the current price of a particular 
-  commodity.
-  3. Using your findings from the search results to analyse how and why the prevailing 
-  global finance markets and geopolitical events within the past week play a part 
-  in the current price of a particular commodity.
+Follow these steps exactly:
+1. Use the provided search tool to find the latest information on global financial 
+markets and geopolitical events from the past week that could affect the commodity's 
+price.
+2. Use the search tool again to find the current price of the commodity.
+3. Based on the search results, analyze how the global markets and geopolitical 
+events have influenced the commodity's price.
 
-Finally, you deliver a brief summary in bullet-point form of your weekly analysis 
-that includes the current price of the commodity in question after completing the 
-above step-by-step process.
+Finally, output a brief summary in HTML format. The summary must include:
+- The current price of the commodity at the top (use an <h2> or <p> with strong emphasis).
+- Then an unordered list (<ul>) of bullet points (<li>). Each bullet point should 
+start with the main point or key figure in <strong> tags, followed by an explanation 
+in regular font.
 
-Your summary output should be in HTML format. Use an unordered list for your bullet 
-points and ensure the main point and key figures are emphasized. Explanations for 
-each point should be in regular font.
+Example structure:
+<h2>Current Price: $2,000 per ounce</h2>
+<ul>
+  <li>
+  <strong>Geopolitical tensions</strong> - Increased demand for safe-haven assets due to...
+  </li>
+  <li>
+  <strong>Interest rate decisions</strong> - The Fed's stance on rates has...
+  </li>
+</ul>
 
-The final summary should have the outline below:
-
-  {Price of commodity}
-  - Summary point 1
-  - Summary point 2
-  - Summary point 3
-  - Summary point n
+Your summary should be concise, fact-based and directly tied to the search results.
 """
 
-user_message = """
-I would like to invest in gold by buying units of the ABSA Gold ETF listed on 
-the Nairobi Securities Exchange as a way of raising capital for various uses.
 
-Generate a brief summary in bullet point form that includes the current price of 
-gold in the past week and how the performance of relevant global finance markets 
-and current and/or relevant prevailing geopolitical events have influenced the price 
-of gold.
-"""
+def create_user_prompt(
+    commodity: str, investment_context: str = ""
+) -> str:
+  """
+  Creates a dynamic prompt for the agent.
+
+  Args:
+    commodity: The name of the commodity (e.g., 'gold', 'silver', 'crude oil').
+    investment_context: Optional additional context about the user's investment or goal.
+
+  Returns:
+    A formatted user message string.
+  """
+  base = f"I would like to analyze the current market conditions for {commodity}."
+
+  if investment_context:
+    base += f"{investment_context}"
+
+  base += """
+Generate a brief summary in bullet point form that includes:
+- The current price of {commodity} in the past week.
+- How the performance of relevant global financial markets and current geopolitical 
+events have influenced the price of {commodity}.""".format(commodity=commodity)
+
+  return base
