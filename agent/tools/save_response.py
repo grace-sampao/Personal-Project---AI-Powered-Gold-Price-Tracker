@@ -1,27 +1,21 @@
-from langchain.tools import tool, ToolRuntime
-from langchain.agents import AgentState
-from langchain.messages import ToolMessage
-from langgraph.types import Command
+import json
+import time
+from pathlib import Path
+
+from ..config import config
 
 
-class CustomState(AgentState):
-  ai_message: str
-
-@tool
-def save_response(
-  response: str, runtime: ToolRuntime[None, CustomState]
-) -> Command:
+def save_response(summary: str) -> None:
   """
-  Set the agent's response in the conversation state.
+  Saves the agent's summary along with the current timestamp to the state file.
   """
-  return Command(
-    update={
-      "ai_message": response,
-      "messages": [
-        ToolMessage(
-          content=f"{response}",
-          tool_call_id=runtime.tool_call_id
-        )
-      ]
-    }
-  )
+  state_file = Path(config.STATE_FILE_PATH)
+  state_file.parent.mkdir(parents=True, exist_ok=True)
+
+  state = {
+    "timestamp": time.time(),
+    "summary": summary
+  }
+
+  with open(state_file, 'w') as f:
+    json.dump(state, f, indent=2)
