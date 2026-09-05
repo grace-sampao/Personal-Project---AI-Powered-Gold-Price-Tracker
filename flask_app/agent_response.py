@@ -1,25 +1,17 @@
-import sys
-from pathlib import Path
-# import importlib
-
-root_dir = Path(__file__).resolve().parent.parent
-sys.path.append(
-  str(root_dir)
-)
-
 from flask import Blueprint, render_template
-from agent.agent import invoke_agent
+from agent.tools.get_response import get_response
 
 
 bp = Blueprint(
   "agent_response", __name__
 )
 
-@bp.route("/", methods=["GET"])
+@bp.route("/", methods=["get"])
 def homepage():
-  response = invoke_agent()
-  response = response["messages"][-1].content
+  # Returns the cached summary if it's still fresh,
+  # otherwise triggers a new agent run & returns the new summary.
+  summary = get_response()
 
   return render_template(
-    "index.html", gold_price_summary=response
+    "index.html", gold_price_summary=summary
   )
