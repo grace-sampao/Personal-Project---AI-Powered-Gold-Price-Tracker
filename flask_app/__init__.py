@@ -1,5 +1,4 @@
 import os
-
 from flask import Flask
 
 
@@ -8,11 +7,10 @@ def create_app(test_config=None):
   app = Flask(
     __name__, instance_relative_config=True
   )
+
+  # Load default configuration
   app.config.from_mapping(
-    SECRET_KEY="dev",
-    DATABASE=os.path.join(
-      app.instance_path, "flask_app.sqlite"
-    )
+    SECRET_KEY=os.environ.get("SECRET_KEY", "dev")
   )
 
   if test_config is None:
@@ -28,6 +26,7 @@ def create_app(test_config=None):
     app.instance_path, exist_ok=True
   )
 
+  # Register blueprints
   from . import agent_response
   app.register_blueprint(agent_response.bp)
 
