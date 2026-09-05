@@ -1,81 +1,65 @@
-import sys
-from pathlib import Path
-# import importlib
-
-root_dir = Path(__file__).resolve().parent.parent
-sys.path.append(
-  str(root_dir)
-)
+from langchain_classic.agents import AgentExecutor, create_tool_calling_agent
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_deepseek import ChatDeepSeek
 
 from agent.config import config
-from agent.tools.search_tool import tavily_search
+from agent.tools.search_tool import search_web
 from agent.tools.save_response import save_response
-from agent.tools.get_response import get_response
-import agent.prompts.prompts as prompt
+from agent.prompts.prompts import SYSTEM_MESSAGE, create_user_prompt
 
-# importlib.reload(config)
 
-from langchain.agents import create_agent
-from langchain_deepseek import ChatDeepSeek
-from langgraph.store.memory import InMemoryStore
-
-import datetime as dt
-
+DEFAULT_COMMODITY = "gold"
 
 model = ChatDeepSeek(
-  model="deepseek-v4-flash",
+  model=config.LLM_MODEL_NAME,
   api_key=config.DEEPSEEK_API_KEY,
   temperature=0,
   max_tokens=None,
   timeout=None,
-  max_retries=2,
+  max_retries=2
 )
 
-store = InMemoryStore()
-
-agent = create_agent(
-  model=model,
-  tools=[tavily_search, save_response, get_response],
-  store=store,
+agent_prompt = ChatPromptTemplate.from_messages(
+  [
+    ("system", SYSTEM_MESSAGE),
+    ("user", "{input}"),
+    MessagesPlaceholder(variable_name="agent_scratchpad")
+  ]
 )
 
-def invoke_agent():
-  start_date = dt.date(2026, 8, 30)
-  current_date = dt.date.today()
-  period_elapsed = current_date - start_date
+# Create the tool calling agent
+agent = create_tool_calling_agent(
+  model, [search_web], agent_prompt
+)
 
-  if period_elapsed.days % 7 != 0:
-    response = agent.invoke(
-      {
-        "messages": [
-          {
-            "role": "system",
-            "content": prompt.system_message
-          },
-          {
-            "role": "user",
-            "content": prompt.user_message
-          }
-        ]
-      }
-    )
+# Wrap it with an AgentExecutor for reliable tool execution
+agent_executor = AgentExecutor(
+  agent=agent,
+  tools=[search_web],
+  verbose=True,
+  handle_parsing_errors=True,
+  max_iterations=5
+)
 
-    return response
-  else:
-    # This part should access the memory & retrieve the response generated when the condition is not met.
-    # I doubt invoking the agent again here achieves this. We'll see.
+def generate_summary(commodity: str = DEFAULT_COMMODITY) -> str:
+  """
+  Invokes the autonomous agent to produce a weekly summary for the given commodity.
+  The result is saved to the state file and returned.
+  """
+  # Build the user prompt for the commodity
+  user_prompt = create_user_prompt(commodity)
 
-    response = agent.invoke(
-      {
-        "messages": [
-          {
-            "role": "user",
-            "content": "Access your AgentState and use the get_response tool provided to output the last AI message."
-          }
-        ]
-      }
-    )
+  # Invoke the agent
+  result = agent_executor.invoke(
+    {"input": user_prompt}
+  )
 
-    # response = response["messages"][-1].content
+  # Extract the final output from the agent's response
+  summary = result.get("output", "")
+  if not summary:
+    summary = "No summary generated."
 
-    return response
+  # Save the new summary and timestamp to the state file
+  save_response(summary)
+
+  return summary
